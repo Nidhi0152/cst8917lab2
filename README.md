@@ -112,8 +112,10 @@ This happened because my Azure subscription did not support creating resources l
 
 ##  Demo Videos
 
-- [Part 1 – Resource Setup and Local Testing]([https://youtu.be/demo-part1](https://youtu.be/JHdtdSmeuOY))
-- [Part 2 – Blob Trigger and Summary Output]([https://youtu.be/demo-part2](https://youtu.be/cy68sUmtqqE))
+- Part 1 – Resource Setup and Local Testing
+  ([https://youtu.be/demo-part1](https://youtu.be/JHdtdSmeuOY))
+- Part 2 – Cloud setup
+  ([https://youtu.be/demo-part2](https://youtu.be/cy68sUmtqqE))
 
 
 
