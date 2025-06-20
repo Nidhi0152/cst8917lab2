@@ -4,7 +4,9 @@ from azure.storage.blob import BlobServiceClient
 import azure.functions as func
 import azure.durable_functions as df
 from azure.identity import DefaultAzureCredential
+from azure.core.credentials import AzureKeyCredential
 from azure.ai.formrecognizer import DocumentAnalysisClient
+import openai
 import json
 import time
 from requests import get, post
@@ -12,9 +14,9 @@ import requests
 from datetime import datetime
 
 my_app = df.DFApp(http_auth_level=func.AuthLevel.ANONYMOUS)
-blob_service_client = BlobServiceClient.from_connection_string(os.environ.get("BLOB_STORAGE_ENDPOINT"))
+blob_service_client = BlobServiceClient.from_connection_string(os.environ.get("BLOB_STORAGE_CONNECTION_STRING"))
 
-@my_app.blob_trigger(arg_name="myblob", path="input", connection="BLOB_STORAGE_ENDPOINT")
+@my_app.blob_trigger(arg_name="myblob", path="input", connection="BLOB_STORAGE_CONNECTION_STRING")
 @my_app.durable_client_input(client_name="client")
 async def blob_trigger(myblob: func.InputStream, client):
     logging.info(f"Python blob trigger function processed blob"
@@ -51,8 +53,9 @@ def analyze_pdf(blobName):
     blob =  blob_client.download_blob().read()
     doc = ''
 
+    key = os.environ["COGNITIVE_SERVICES_KEY"]
     endpoint = os.environ["COGNITIVE_SERVICES_ENDPOINT"]
-    credential = DefaultAzureCredential()
+    credential = AzureKeyCredential(key)
 
     document_analysis_client = DocumentAnalysisClient(endpoint, credential)
 
@@ -66,12 +69,28 @@ def analyze_pdf(blobName):
     return doc
 
 @my_app.activity_trigger(input_name='results')
-@my_app.generic_input_binding(arg_name="response", type="textCompletion", data_type=func.DataType.STRING, prompt="Can you explain what the following text is about? {results}", model = "%CHAT_MODEL_DEPLOYMENT_NAME%")
-def summarize_text(results, response: str):
-    logging.info(f"in summarize_text activity")
-    response_json = json.loads(response)
-    logging.info(response_json['content'])
-    return response_json
+def summarize_text(results):
+    logging.info("in summarize_text activity")
+
+    client = openai.AzureOpenAI(
+        api_key=os.environ["AZURE_OPENAI_KEY"],
+        api_version="2024-02-15-preview",
+        azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
+    )
+
+    response = client.chat.completions.create(
+        model=os.environ["CHAT_MODEL_DEPLOYMENT_NAME"],  # this is your deployment name
+        messages=[
+            {"role": "system", "content": "Summarize the following text."},
+            {"role": "user", "content": results}
+        ],
+        temperature=0.7,
+        max_tokens=500
+    )
+
+    summary = response.choices[0].message.content
+    logging.info(summary)
+    return { "content": summary }
 
 @my_app.activity_trigger(input_name='results')
 def write_doc(results):

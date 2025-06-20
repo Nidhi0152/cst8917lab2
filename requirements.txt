@@ -13,3 +13,5 @@ requests
 pandas
 numpy
 PyPDF2
+openai
+azure-ai-ml

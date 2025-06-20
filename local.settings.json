@@ -1,0 +1,14 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=desainidhistorage;AccountKey=KtK7JRMorFEo4yzaNdUz1Vt141kOWpRpwCJCnOke3dUUV1wXVLtZ1ZzDXNm+t3JIBc5BattokAgK+AStdM8Zvw==;EndpointSuffix=core.windows.net",
+    "AzureWebJobsFeatureFlags": "EnableWorkerIndexing",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "BLOB_STORAGE_CONNECTION_STRING": "DefaultEndpointsProtocol=https;AccountName=desainidhistorage;AccountKey=KtK7JRMorFEo4yzaNdUz1Vt141kOWpRpwCJCnOke3dUUV1wXVLtZ1ZzDXNm+t3JIBc5BattokAgK+AStdM8Zvw==;EndpointSuffix=core.windows.net",
+    "COGNITIVE_SERVICES_ENDPOINT": "https://pdf-formrec.cognitiveservices.azure.com/",
+    "COGNITIVE_SERVICES_KEY": "9fxdiMVGg3MKi6r7EAMMo0hlBORqETkeXBlDbJyd6ruHaW4kG3qJJQQJ99BFACBsN54XJ3w3AAALACOGqmHt",
+    "AZURE_OPENAI_ENDPOINT": "https://desa0-mc4woh2d-swedencentral.cognitiveservices.azure.com/openai/deployments/my-gpt-4/chat/completions?api-version=2025-01-01-preview",
+    "AZURE_OPENAI_KEY": "3SvqVzBxvNQYuB8z4Meg5LuymKEpjbdcX0mPFaWEzl9uO8DjSlcQJQQJ99BFACfhMk5XJ3w3AAAAACOGzbqt",
+    "CHAT_MODEL_DEPLOYMENT_NAME": "my-gpt-4"
+  }
+}
