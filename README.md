@@ -31,7 +31,8 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 ### 2.  Start Azurite (Local Run)
-```azurite
+```
+azurite
 ```
 ### 3. local.settings.json (Local Run)
 ```
@@ -52,9 +53,12 @@ pip install -r requirements.txt
 ```
 ### 4.Start the Azure Functions host
 ```
-func start --verbose ```
+func start --verbose
+ ```
+
 ---
-##  Local Development Setup
+
+##  Azure Cloud Development Setup
 ### 1. Clone and Set Up Virtual Environment
 
 ```bash
@@ -65,15 +69,15 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. local.settings.json (Local Run)
+### 2. local.settings.json 
 ```
 {
   "IsEncrypted": false,
   "Values": {
-    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=desainidhistorage;AccountKey=KtK7JRMorFEo4yzaNdUz1Vt141kOWpRpwCJCnOke3dUUV1wXVLtZ1ZzDXNm+t3JIBc5BattokAgK+AStdM8Zvw==;EndpointSuffix=core.windows.net",
     "AzureWebJobsFeatureFlags": "EnableWorkerIndexing",
     "FUNCTIONS_WORKER_RUNTIME": "python",
-    "BLOB_STORAGE_CONNECTION_STRING": "AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;DefaultEndpointsProtocol=http;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;QueueEndpoint=http://127.0.0.1:10001/devstoreaccount1;TableEndpoint=http://127.0.0.1:10002/devstoreaccount1;",
+    "BLOB_STORAGE_CONNECTION_STRING": "DefaultEndpointsProtocol=https;AccountName=desainidhistorage;AccountKey=KtK7JRMorFEo4yzaNdUz1Vt141kOWpRpwCJCnOke3dUUV1wXVLtZ1ZzDXNm+t3JIBc5BattokAgK+AStdM8Zvw==;EndpointSuffix=core.windows.net",
     "COGNITIVE_SERVICES_ENDPOINT": "https://pdf-formrec.cognitiveservices.azure.com/",
     "COGNITIVE_SERVICES_KEY": "9fxdiMVGg3MKi6r7EAMMo0hlBORqETkeXBlDbJyd6ruHaW4kG3qJJQQJ99BFACBsN54XJ3w3AAALACOGqmHt",
     "AZURE_OPENAI_ENDPOINT": "https://desa0-mc4woh2d-swedencentral.cognitiveservices.azure.com/openai/deployments/my-gpt-4/chat/completions?api-version=2025-01-01-preview",
@@ -82,6 +86,34 @@ pip install -r requirements.txt
   }
 }
 ```
-### 4.Start the Azure Functions host
+### 3.Start the Azure Functions host
 ```
-func start --verbose ```
+func start --verbose
+```
+
+---
+##  Challenges Faced
+
+While deploying the solution using `azd up` from Visual Studio Code, I encountered a significant limitation. The Canada Central region was not available as an option during resource selection, so I selected an alternative region. However, deployment failed with the following error:
+```
+SubscriptionIsOverQuotaForSku: This region has quota of 0 ElasticPremium instances for your subscription.
+ServiceModelDeprecated: The model 'Format:OpenAI, Name: gpt-35-turbo, Version:0613' has been deprecated.
+```
+
+This happened because my Azure subscription did not support creating resources like OpenAI and Form Recognizer in different regions or with the selected SKU.
+
+## To resolve this:
+- I manually created the required Azure resources.
+- Updated the connection string in `local.settings.json`.
+- Successfully tested the solution locally using Azurite.
+- Created a summarized output by uploading a sample PDF to the `input` container.
+
+---
+
+##  Demo Videos
+
+- [Part 1 – Resource Setup and Local Testing]([https://youtu.be/demo-part1](https://youtu.be/JHdtdSmeuOY))
+- [Part 2 – Blob Trigger and Summary Output]([https://youtu.be/demo-part2](https://youtu.be/cy68sUmtqqE))
+
+
+
